@@ -3,9 +3,6 @@ from page import *
 
 class CollectingDataGUI:
     def __init__(self, parent):
-        parent.columnconfigure(0, weight=1)
-        parent.rowconfigure(0, weight=1)
-
         root_frame = Frame(parent)
         root_frame.grid(row=0, column=0, sticky="news")
         root_frame.columnconfigure(0, weight=1)
@@ -20,12 +17,15 @@ class CollectingDataGUI:
         nav_frame.columnconfigure(0, weight=1)
         nav_frame.rowconfigure(0, weight=1)
         
-        self.page = PAGES[0]()
         self.page_label = Label(nav_frame, bg="pink")
         self.page_label.grid(row=0, column=0, sticky="nws")
         self.action_buttons_frame = Frame(nav_frame)
         self.action_buttons_frame.grid(row=0, column=1, padx=(0, 5))
-        self.update_nav_frame()
+
+        self.content_frame = Frame(root_frame)
+        self.content_frame.grid(row=1, column=0)
+
+        self.nav_to_page(PAGES[0])
 
     def update_nav_frame(self):
         self.page_label["text"] = self.page.get_page_title()
@@ -41,13 +41,16 @@ class CollectingDataGUI:
                 Button(self.action_buttons_frame, text=page_class.get_page_action_name(), command=lambda: self.nav_to_page(x)).grid(row=0, column=c)
                 c = c + 1
         
-
     def nav_to_page(self, page_class):
-        self.page = page_class()
+        # clear content
+        for widget in self.content_frame.winfo_children():
+            widget.destroy()
+        self.page = page_class(self.content_frame)
         self.update_nav_frame()
-        
 
 if __name__ == "__main__":
     root = Tk()
+    root.columnconfigure(0, weight=1)
+    root.rowconfigure(0, weight=1)
     CollectingDataGUI(root)
     root.mainloop() 
