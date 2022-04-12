@@ -25,6 +25,7 @@ class CollectingDataGUI:
         self.content_frame = Frame(root_frame)
         self.content_frame.grid(row=1, column=0)
 
+        self.state = {}
         self.nav_to_page(PAGES[0])
 
     def update_nav_frame(self):
@@ -40,12 +41,12 @@ class CollectingDataGUI:
                 x = page_class
                 Button(self.action_buttons_frame, text=page_class.get_page_action_name(), command=lambda: self.nav_to_page(x)).grid(row=0, column=c)
                 c = c + 1
-        
+
     def nav_to_page(self, page_class):
         # clear content
         for widget in self.content_frame.winfo_children():
             widget.destroy()
-        self.page = page_class(self.content_frame)
+        self.page = page_class(self.content_frame, self.state)
         self.update_nav_frame()
 
 if __name__ == "__main__":
