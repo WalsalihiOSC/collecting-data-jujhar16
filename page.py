@@ -74,15 +74,8 @@ class DisplayingPage:
         self.age_label["text"] = person["age"]
         self.has_mobile_phone["text"] = "Yes" if person["has_mobile_phone"] else "No"
         
-        if self.current_person_index == 0:
-            self.previous_button["state"] = "disabled"
-        else:
-            self.previous_button["state"] = "normal"
-
-        if self.current_person_index + 1 == len(self.people):
-            self.next_button["state"] = "disabled"
-        else:
-            self.next_button["state"] = "normal"
+        self.previous_button["state"] = "disabled" if self.current_person_index == 0 else "normal"
+        self.next_button["state"] = "disabled" if self.current_person_index + 1 == len(self.people) else "normal"
 
     def get_page_action_name():
         return "Show All"
